@@ -1,0 +1,31 @@
+{
+  "name": "react-app",
+  "version": "1.0.0",
+  "description": "Basic React App ",
+  "scripts": {
+    "test": "jest",
+    "start": "parcel index.html",
+    "build": "npx parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gauravpandit747/React-App.git"
+  },
+  "author": "Gaurav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gauravpandit747/React-App/issues"
+  },
+  "homepage": "https://github.com/Gauravpandit747/React-App#readme",
+  "devDependencies": {
+    "@babel/core": "^7.26.7",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "parcel": "^2.13.3",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-shimmer-effects": "^1.0.3"
+  }
+}
