@@ -1,102 +1,35 @@
-# #  Use the official Node.js image as the base image
-# # FROM node:14
-# FROM node:lts-alpine AS builder
+# Stage 1: Build Stage
+FROM node:18-alpine AS builder
 
-# # Set the working directory
-# WORKDIR /
+# Set working directory
+WORKDIR /app
 
-# # Copy package.json and package-lock.json to the working directory
-# COPY package*.json ./
-
-# # Install dependencies
-# RUN npm install
-
-# # Copy the rest of the application code to the working directory
-# COPY . .
-
-# # Build the React application
-# RUN npm run build
-
-# # Use the official Nginx image to serve the React application
-# FROM nginx:alpine
-
-# # Copy the build output to the Nginx html directory
-# COPY --from=0 /app/build /usr/share/nginx/html
-
-# # Expose port 80
-# EXPOSE 80
-
-# # Start Nginx
-# CMD ["nginx", "-g", "daemon off;"]
-
-
-# Use the latest LTS version of Node.js (Debian-based)
-FROM node:lts AS builder
-
-# Set the working directory
-WORKDIR /
-
-# Copy package.json and package-lock.json first (for better caching)
+# Copy package.json and package-lock.json (or yarn.lock)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --force
+# Install dependencies (optimized for caching)
+RUN npm install --frozen-lockfile --production=false
 
-# Copy the rest of the application
+# Copy the rest of the app’s source code
 COPY . .
 
-# Set Parcel output directory to "build"
-ENV PARCEL_WORKERS=0
+# Build the React app using Parcel
+RUN npm run build
 
-# Build the React application (corrected command)
-RUN npx parcel build index.html --dist-dir build
+# Stage 2: Production Stage
+FROM nginx:stable-alpine
 
-# Debugging step: Check if build directory exists
-RUN ls -la /build
+# Set working directory
+WORKDIR /usr/share/nginx/html
 
-# Use a minimal Nginx image for serving the React app
-FROM nginx:alpine
+# Remove default nginx static files
+RUN rm -rf ./*
 
-# Copy the build output from the builder stage to Nginx's serving directory
-COPY --from=builder /build /usr/share/nginx/html
+# Copy built app from builder stage
+COPY --from=builder /app/dist .
 
 # Expose port 80
 EXPOSE 80
 
-# Run Nginx
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
-
-
-# # Use the latest LTS version of Node.js
-# FROM node:lts AS builder
-
-# # Set the working directory
-# WORKDIR /app
-
-# # Copy package.json and package-lock.json first (better caching)
-# COPY package*.json ./
-
-# # Install dependencies
-# RUN npm install --force
-
-# # Copy the rest of the application
-# COPY . .
-
-# # Disable Parcel workers (fixes "Invalid argument" error in Alpine)
-# ENV PARCEL_WORKERS=0
-
-# # Build the React application
-# RUN npm run build
-
-# # Use a minimal Nginx image for serving the React app
-# FROM nginx:alpine
-
-# # Copy the build output from the builder stage to Nginx's serving directory
-# COPY --from=builder /app/build /usr/share/nginx/html
-
-# # Expose port 80
-# EXPOSE 80
-
-# # Run Nginx
-# CMD ["nginx", "-g", "daemon off;"]
-

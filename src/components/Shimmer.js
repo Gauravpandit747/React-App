@@ -1,7 +1,12 @@
+import { ShimmerPostList } from "react-shimmer-effects";
+import React from "react";
+
 const Shimmer = () => {
-    return (
-        <h1>Shimmer UI Loading.......</h1>
-    );
-}
+  return (
+    <>
+      <ShimmerPostList postStyle="STYLE_FOUR" col={4} row={5} gap={30} />
+    </>
+  );
+};
 
 export default Shimmer;
