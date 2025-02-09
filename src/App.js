@@ -3,7 +3,9 @@ import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
-const heading = React.createElement("h1", { id: "title" }, "Heading 1");
+import { createBrowserRouter, RouterProvider } from "react-router";
+import About from "./components/About";
+import Error from "./components/Error";
 
 const AppComponent = () => {
   return (
@@ -15,5 +17,20 @@ const AppComponent = () => {
   );
 };
 
+const appRouter = createBrowserRouter([
+  {
+    path:"/",
+    element:<AppComponent/>,
+    errorElement:<Error/>,
+  },
+  {
+    path:"/about",
+    element:<About/>,
+  },
+  {
+    path:"",
+    element:<Error/>
+  }
+]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<AppComponent />);
+root.render(<RouterProvider router={appRouter} />);

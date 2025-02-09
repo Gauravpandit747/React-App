@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import logo from "../assets/img/logo.png";
 const loggedInUser = () => {
   return true;
 }
@@ -10,7 +10,7 @@ const Title = () => {
         <img
           alt="logo"
           className="logo"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAFVXe2Tg6hViwCnFCKGZcfsFyM7TKOCNQKQ&s"
+          src={logo}
         ></img>
       </a>
     );
