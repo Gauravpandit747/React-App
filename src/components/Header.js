@@ -1,18 +1,20 @@
 import { useState } from "react";
 import logo from "../assets/img/logo.png";
+import { Link } from "react-router";
+
 const loggedInUser = () => {
   return true;
 }
 
 const Title = () => {
     return (
-      <a href="/">
+        <Link to="/">
         <img
           alt="logo"
           className="logo"
           src={logo}
         ></img>
-      </a>
+        </Link>
     );
   };
   
@@ -24,9 +26,9 @@ const Title = () => {
          <Title />
          <div className="nav-items">
            <ul>
-             <li>Home</li>
-             <li>About</li>
-             <li>Contact</li>
+           <Link to="/">Home</Link>
+             <Link to="/about">About</Link>
+             <Link to="/contact">Contact</Link>
              <li>Cart</li>
            </ul>
          </div>
