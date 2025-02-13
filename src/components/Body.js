@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
-import { restaurants_list } from "../config";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router";
-
-function filterData(searchText, restaurants) {
-  return restaurants.filter((restaurant) =>
-    restaurant?.info?.name.toLowerCase().includes(searchText.toLowerCase())
-  );
-}
+import { filterData } from "../utils/helper";
+import useOnline from "../utils/useOnline";
 
 const Body = () => {
   const [Filteredrestaurants, setFilteredrestaurants] = useState([]);
@@ -32,11 +27,15 @@ const Body = () => {
     );
   }
 
-  const handleOnChangeSearchText = (e) => {
-    setSearchText(e.target.value);
-  };
-
   if (!allRestaurants) return null;
+
+  const isOnline = useOnline();
+  if (!isOnline) {
+    return <h1>
+      Offline, Please check your internet connection!!
+    </h1>
+  }
+
 
   // if (Filteredrestaurants.length === 0) {
   //   return <h1> No restaurants match your filter...</h1>;
@@ -70,8 +69,11 @@ const Body = () => {
       <div className="restaurant-list">
         {Filteredrestaurants.map((restaurant, index) => {
           return (
-            <Link to={"/restaurant/"+ restaurant.info.id} key={restaurant.info.id}>
-              <RestaurantCard {...restaurant.info}  />
+            <Link
+              to={"/restaurant/" + restaurant.info.id}
+              key={restaurant.info.id}
+            >
+              <RestaurantCard {...restaurant.info} />
             </Link>
           );
         })}
