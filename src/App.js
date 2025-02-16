@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
@@ -9,16 +9,24 @@ import Contact from "./components/Contact";
 import RestaurantMenu from "./components/RestaurantMenu";
 import Profile from "./components/Profile";
 import Shimmer from "./components/Shimmer";
+import UserContext from "./utils/UserContext";
 
-const InstaMart = lazy(() => import("./components/InstaMart"));
+const InstaMart = lazy(() => import("./components/Instamart/InstaMart"));
 const About = lazy(() => import("./components/About"));
 
 const AppComponent = () => {
+  const [user, setUser] = useState({
+    name: "Gaurav",
+    email: "gaurav@gmail.com",
+  });
+
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <UserContext.Provider value={{user:user}}>
+        <Header />
+        <Outlet />
+        <Footer />
+      </UserContext.Provider>
     </>
   );
 };
@@ -35,9 +43,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <Suspense fallback={<h1> About page is loading...</h1>}>
-          <About />
-        </Suspense>,
+        element: (
+          <Suspense fallback={<h1> About page is loading...</h1>}>
+            <About />
+          </Suspense>
+        ),
         children: [
           {
             path: "profile",

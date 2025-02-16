@@ -1,18 +1,19 @@
-// import { ShimmerPostList } from "react-shimmer-effects";
 import React from "react";
 
 const Shimmer = () => {
-  return (
-    // <>
-    //   <ShimmerPostList postStyle="STYLE_FOUR" col={4} row={5} gap={30} />
-    // </>
+  const skeletonItems = Array.from({ length: 18 });
 
-    <div className="restaurant-list">
-      {Array(10)
-        .fill("")
-        .map((e,index) => (
-          <div key={index} className="shimmer-card"></div>
+  return (
+    <div>
+      <div className="w-screen my-5 h-25 aspect-square bg-gray-200"></div>
+      <div className="flex flex-wrap animate-pulse">
+        {skeletonItems.map((_, index) => (
+          <div
+            key={index}
+            className="w-55 h-80 m-3 aspect-square bg-gray-200"
+          ></div>
         ))}
+      </div>
     </div>
   );
 };

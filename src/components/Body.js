@@ -4,7 +4,8 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router";
 import { filterData } from "../utils/helper";
 import useOnline from "../utils/useOnline";
-
+import { ALL_RESTAURANTS_URL } from "../config"
+ 
 const Body = () => {
   const [Filteredrestaurants, setFilteredrestaurants] = useState([]);
   const [allRestaurants, setallRestaurants] = useState([]);
