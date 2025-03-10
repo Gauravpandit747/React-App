@@ -4,14 +4,23 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router";
 import { filterData } from "../utils/helper";
 import useOnline from "../utils/useOnline";
-import { ALL_RESTAURANTS_URL } from "../config"
- 
+import { ALL_RESTAURANTS_URL } from "../config";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+
 const Body = () => {
+  const isLoggedIn = useSelector((store) => store?.user?.isLoggedIn);
   const [Filteredrestaurants, setFilteredrestaurants] = useState([]);
   const [allRestaurants, setallRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+
   useEffect(() => {
     console.log("Render()");
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+
     getAPIData();
   }, []);
 
@@ -29,14 +38,6 @@ const Body = () => {
   }
 
   if (!allRestaurants) return null;
-
-  const isOnline = useOnline();
-  if (!isOnline) {
-    return <h1>
-      Offline, Please check your internet connection!!
-    </h1>
-  }
-
 
   // if (Filteredrestaurants.length === 0) {
   //   return <h1> No restaurants match your filter...</h1>;

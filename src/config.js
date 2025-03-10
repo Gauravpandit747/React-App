@@ -36,6 +36,8 @@ export const config = [
   },
 ];
 
+export const BACKEND_END_POINT = "http://localhost:9000"
+
 // All Data
 // https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.0595596&lng=72.8295287&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING
 // Menu

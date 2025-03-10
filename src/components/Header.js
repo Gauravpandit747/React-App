@@ -1,13 +1,10 @@
-import { useState, useContext } from "react";
+import { useEffect } from "react";
 import logo from "../assets/img/logo.png";
 import { Link } from "react-router";
-import useOnline from "../utils/useOnline";
-import UserContext from "../utils/UserContext";
 import { useSelector } from "react-redux";
-
-const loggedInUser = () => {
-  return true;
-};
+import { useDispatch } from "react-redux";
+import { removeUser } from "../utils/store/userSclice";
+import { clearCart } from "../utils/store/cartSlice";
 
 const Title = () => {
   return (
@@ -18,42 +15,83 @@ const Title = () => {
 };
 
 const Header = () => {
-  const [isLoggedIn, setisLoggedIn] = useState(false);
-  const isOnline = useOnline();
-  const { user } = useContext(UserContext);
+  const isLoggedIn = useSelector((store) => store.user.isLoggedIn);
+  const userData = useSelector((store) => store?.user?.userData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+  }, [isLoggedIn, userData]);
+
   const cartItems = useSelector((store) => store.cart.items);
+
+  const logOut = () => {
+    dispatch(removeUser());
+    dispatch(clearCart());
+  };
+
   return (
-    <div className="flex justify-between bg-amber-100 shadow-lg">
+    <div className="flex justify-between items-center bg-amber-100 shadow-lg px-6 py-4">
       <Title />
-      <div className="nav-items">
-        <ul className="flex py-10">
-          <Link to="/">
-            <li className="px-2">Home</li>
+
+      <nav className="nav-items">
+        <ul className="flex space-x-6 text-lg font-medium">
+          <Link to="/" className="hover:text-amber-600 transition">
+            Home
           </Link>
-          <Link to="/about">
-            <li className="px-2">About</li>
+          <Link to="/about" className="hover:text-amber-600 transition">
+            About
           </Link>
-          <Link to="/contact">
-            <li className="px-2">Contact</li>
+          <Link to="/contact" className="hover:text-amber-600 transition">
+            Contact
           </Link>
-          <Link to="/cart">
-            <li className="px-2">Cart - {cartItems.length}</li>
+          {isLoggedIn && (
+            <Link to="/cart" className="hover:text-amber-600 transition">
+              Cart - {cartItems.length}
+            </Link>
+          )}
+
+          <Link to="/instamart" className="hover:text-amber-600 transition">
+            InstaMart
           </Link>
-          <Link to="/instamart">
-            <li className="px-2">InstaMart</li>
-          </Link>
-          <Link to="/login">
-            <li className="px-2">Login</li>
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              to="/login"
+              onClick={logOut}
+              className="hover:text-amber-600 transition"
+            >
+              Logout
+            </Link>
+          ) : (
+            <Link to="/login" className="hover:text-amber-600 transition">
+              Login
+            </Link>
+          )}
+
+          {!isLoggedIn ? (
+            <Link
+              to="/register"
+              onClick={logOut}
+              className="hover:text-amber-600 transition"
+            >
+              Register
+            </Link>
+          ) : (
+            <Link to="" className="hover:text-amber-600 transition"></Link>
+          )}
         </ul>
+      </nav>
+
+      <div className="flex items-center space-x-4">
+        <Link to="/edituser">
+          {isLoggedIn ? (
+            <span className="font-bold text-xl text-amber-600">
+              {userData.username}
+            </span>
+          ) : (
+            ""
+          )}
+        </Link>        
       </div>
-      <span className="font-bold text-xl p-9 text-amber-600">{user.name}</span>
-      {isOnline ? "✅" : "❌"}
-      {/* {isLoggedIn ? (
-        <button onClick={() => setisLoggedIn(false)}>Logout</button>
-      ) : (
-        <button onClick={() => setisLoggedIn(true)}>Login</button>
-      )} */}
     </div>
   );
 };

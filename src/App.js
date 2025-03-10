@@ -11,7 +11,9 @@ import Profile from "./components/Profile";
 import Shimmer from "./components/Shimmer";
 import UserContext from "./utils/UserContext";
 import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import Cart from "./components/Cart";
+import EditUser from "./components/Auth/EditUser";
 const InstaMart = lazy(() => import("./components/Instamart/InstaMart"));
 const About = lazy(() => import("./components/About"));
 import { Provider } from "react-redux";
@@ -25,13 +27,11 @@ const AppComponent = () => {
 
   return (
     <>
-    <Provider store={store}>
-    <UserContext.Provider value={{user:user}}>
+      <UserContext.Provider value={{ user: user }}>
         <Header />
         <Outlet />
         <Footer />
       </UserContext.Provider>
-    </Provider>
     </>
   );
 };
@@ -75,6 +75,16 @@ const appRouter = createBrowserRouter([
       },
 
       {
+        path: "/register",
+        element: <Register />,
+      },
+
+      {
+        path: "/edituser",
+        element: <EditUser />,
+      },
+
+      {
         path: "/cart",
         element: (
           <Suspense fallback={<Shimmer />}>
@@ -99,4 +109,8 @@ const appRouter = createBrowserRouter([
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={appRouter} />);
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={appRouter} />
+  </Provider>
+);

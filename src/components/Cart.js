@@ -2,10 +2,19 @@ import { useSelector } from "react-redux";
 import { IMG_CDN_URL } from "../config";
 import { clearCart } from "../utils/store/cartSlice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 const Cart = () => {
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, []);
   const cartItems = useSelector((store) => store.cart.items);
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((store) => store?.user?.isLoggedIn);
+  const navigate = useNavigate();
 
   const handleclearCart = () => {
     dispatch(clearCart());
@@ -29,7 +38,6 @@ const Cart = () => {
           </div>
         ))}
       </div>
-      {/* <RestaurantMenu restaurantId={restaurantId} restaurantName = {restaurantName} menuList = {cartItems}></RestaurantMenu> */}
     </>
   );
 };
