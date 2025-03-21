@@ -50,7 +50,7 @@ const Header = () => {
             </Link>
           )}
 
-          <Link to="/instamart" className="hover:text-amber-600 transition">
+          <Link  to={isLoggedIn ? "/instamart":'#'} className="hover:text-amber-600 transition">
             InstaMart
           </Link>
           {isLoggedIn ? (

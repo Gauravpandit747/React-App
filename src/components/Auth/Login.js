@@ -19,7 +19,8 @@ const LoginForm = () => {
       const data = await login(credentials);
       handleLogin(data.token, data.data);
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      console.log("::::::::::::::::::::::::::::");
+      setError(err?.message || "Login failed");
     }
   };
 
@@ -35,7 +36,7 @@ const LoginForm = () => {
     });
 
     const response = await fetch(myRequest);
-    if (response) {
+    if (response.status == 200) {
       jsonData = await response.json();
       jsonData.isLoggedIn = true;
       const user = {
@@ -44,6 +45,8 @@ const LoginForm = () => {
       };
       dispatch(addUser(jsonData));
       navigate("/");
+    } else {
+      console.log(await response.json());
     }
   };
 
@@ -84,6 +87,14 @@ const LoginForm = () => {
             Login
           </button>
         </form>
+        {error !== "" && (
+          <div
+            class="p-4 mb-4 text-red-800 bg-red-100 border border-red-300 rounded-lg"
+            role="alert"
+          >
+            ❌ {error}.
+          </div>
+        )}
       </div>
     </>
   );

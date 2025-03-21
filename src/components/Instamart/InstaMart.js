@@ -29,14 +29,16 @@ const Section = ({ title, description, isVisible, setIsVisible }) => {
 };
 
 const InstaMart = () => {
+  const isLoggedIn = useSelector((store) => store?.user?.isLoggedIn);
+  const [visibleSelection, setvisibleSelection] = useState("team");
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/login");
     }
-  }, []);
-  const [visibleSelection, setvisibleSelection] = useState("team");
-  const isLoggedIn = useSelector((store) => store?.user?.isLoggedIn);
-  const navigate = useNavigate();
+  }, [isLoggedIn]);
+
 
   return (
     <div>

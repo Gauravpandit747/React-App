@@ -45,6 +45,10 @@ const Register = () => {
     if ((response.status = 200)) {
       jsonData = await response.json();
       navigate("/login");
+    } else {
+     return  <div class="p-4 mb-4 text-red-800 bg-red-100 border border-red-300 rounded-lg" role="alert">
+     ❌ Error! Something went wrong. Try again.
+   </div>
     }
   };
 
